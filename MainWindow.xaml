@@ -1,0 +1,171 @@
+﻿<Window x:Class="ClaimSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Lecturer Claim System" Width="1100" Height="750"
+        WindowStartupLocation="CenterScreen" Background="#F9FBFC">
+    <Grid Margin="10">
+        <TabControl x:Name="mainTabControl" FontFamily="Segoe UI" Background="#E8F5E9" BorderBrush="#009688" BorderThickness="2">
+
+            <!-- Lecturer Login & Registration -->
+            <TabItem Header="Lecturer Login" x:Name="tabLecturerLogin">
+                <ScrollViewer>
+                    <StackPanel Width="400" HorizontalAlignment="Center" Margin="0,20,0,20">
+                        <TextBlock Text="Lecturer Login" FontSize="22" FontWeight="Bold" Margin="0,0,0,20"/>
+                        <Label Content="Lecturer ID:"/>
+                        <TextBox x:Name="txtLoginID" Height="28"/>
+                        <Label Content="Password:" Margin="0,10,0,0"/>
+                        <PasswordBox x:Name="txtLoginPassword" Height="28"/>
+                        <Button Content="Login" Width="120" Margin="0,15,0,0"
+                                Background="#0277BD" Foreground="White" FontWeight="Bold"
+                                Click="LoginLecturer_Click"/>
+                        <Separator Margin="0,20,0,20"/>
+                        <TextBlock Text="Register New Lecturer" FontSize="18" FontWeight="Bold"/>
+                        <Label Content="Full Name:"/>
+                        <TextBox x:Name="txtRegName" Height="28"/>
+                        <Label Content="Lecturer ID:" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtRegID" Height="28"/>
+                        <Label Content="Email:" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtRegEmail" Height="28"/>
+                        <Label Content="Password:" Margin="0,10,0,0"/>
+                        <PasswordBox x:Name="txtRegPassword" Height="28"/>
+                        <Button Content="Create Account" Width="160" Margin="0,15,0,0"
+                                Background="#009688" Foreground="White" FontWeight="Bold"
+                                Click="RegisterLecturer_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Lecturer Claim Viewer -->
+            <TabItem Header="My Claims" x:Name="tabLecturerClaims" Visibility="Collapsed">
+                <StackPanel Margin="10">
+                    <TextBlock x:Name="lblLoggedInName" FontSize="20" FontWeight="Bold" Foreground="#0277BD"/>
+                    <Button Content="Logout" Width="120" Margin="0,10,0,20"
+                            Background="#D32F2F" Foreground="White" FontWeight="Bold"
+                            Click="LogoutLecturer_Click"/>
+                    <DataGrid x:Name="dgLecturerClaims" AutoGenerateColumns="False" Height="420" CanUserAddRows="False"
+                              LoadingRow="dgLecturerClaims_LoadingRow">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Lecturer ID" Binding="{Binding LecturerId}" Width="120"/>
+                            <DataGridTextColumn Header="Lecturer" Binding="{Binding LecturerName}" Width="160"/>
+                            <DataGridTextColumn Header="Hours" Binding="{Binding HoursWorked}" Width="70"/>
+                            <DataGridTextColumn Header="Rate" Binding="{Binding HourlyRate}" Width="80"/>
+                            <DataGridTextColumn Header="Total (R)" Binding="{Binding TotalAmount}" Width="100"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90"/>
+                            <DataGridTextColumn Header="Submitted" Binding="{Binding DateSubmitted}" Width="140"/>
+                            <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+
+            <!-- Submit Claim Tab -->
+            <TabItem Header="Submit Claim">
+                <ScrollViewer>
+                    <StackPanel Width="480" Margin="20">
+                        <TextBlock Text="Lecturer Claim Form" FontSize="22" FontWeight="Bold" Foreground="#0277BD" Margin="0,0,0,15"/>
+                        <Label Content="Full Name:" Foreground="#004D40" FontWeight="Bold"/>
+                        <TextBox x:Name="txtLecturerName" Height="30" BorderBrush="#009688" BorderThickness="1"/>
+                        <Label Content="Lecturer ID:" Foreground="#004D40" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtLecturerID" Height="30" BorderBrush="#009688" BorderThickness="1"/>
+                        <Label Content="Email:" Foreground="#004D40" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtLecturerEmail" Height="30" BorderBrush="#009688" BorderThickness="1"/>
+                        <Label Content="Hours Worked:" Foreground="#004D40" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtHoursWorked" Height="30" BorderBrush="#009688" BorderThickness="1"/>
+                        <Label Content="Hourly Rate (R):" Foreground="#004D40" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtHourlyRate" Height="30" BorderBrush="#009688" BorderThickness="1"/>
+                        <Label Content="Notes:" Foreground="#004D40" FontWeight="Bold" Margin="0,10,0,0"/>
+                        <TextBox x:Name="txtNotes" Height="60" TextWrapping="Wrap" AcceptsReturn="True" BorderBrush="#009688" BorderThickness="1"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                            <Button x:Name="btnUpload" Content="Upload Document" Width="150" Height="35"
+                                    Background="#009688" Foreground="White" FontWeight="Bold"
+                                    Click="UploadFile_Click"/>
+                            <TextBlock x:Name="txtFilePath" Text="No file selected" VerticalAlignment="Center"
+                                       Margin="10,0,0,0" Foreground="#004D40"/>
+                        </StackPanel>
+                        <Button Content="Submit Claim" Width="160" Height="40" Margin="0,20,0,0"
+                                Background="#0277BD" Foreground="White" FontWeight="Bold"
+                                Click="SubmitClaim_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Manager Review Tab -->
+            <TabItem Header="Manager Review">
+                <Grid Background="#E8F5E9">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Claims Management" FontSize="22" FontWeight="Bold" Foreground="#2E7D32" Margin="0,0,0,15"/>
+                    <DataGrid x:Name="dgClaims" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" BorderBrush="#009688" BorderThickness="1" ItemsSource="{Binding Claims}" LoadingRow="dgClaims_LoadingRow">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Lecturer ID" Binding="{Binding LecturerId}" Width="110"/>
+                            <DataGridTextColumn Header="Lecturer" Binding="{Binding LecturerName}" Width="150"/>
+                            <DataGridTextColumn Header="Hours" Binding="{Binding HoursWorked}" Width="70"/>
+                            <DataGridTextColumn Header="Rate" Binding="{Binding HourlyRate}" Width="70"/>
+                            <DataGridTextColumn Header="Total (R)" Binding="{Binding TotalAmount}" Width="90"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90"/>
+                            <DataGridTextColumn Header="Submitted" Binding="{Binding DateSubmitted}" Width="140"/>
+                            <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="200"/>
+                            <DataGridTemplateColumn Header="File" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Open" Width="60" Height="22" Margin="0,0,5,0"
+                                                    Click="OpenFile_Click" Tag="{Binding StoredFilePath}" IsEnabled="{Binding HasFile}"/>
+                                            <TextBlock Text="{Binding OriginalFileName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Width="70"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Actions" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Approve" Width="65" Height="24" Margin="0,0,5,0" Click="ApproveRow_Click" Tag="{Binding}"/>
+                                            <Button Content="Reject" Width="65" Height="24" Click="RejectRow_Click" Tag="{Binding}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TextBlock Grid.Row="2" Foreground="#004D40" Margin="5" Text="Select a row and use Approve/Reject per claim or use the buttons in each row."/>
+                </Grid>
+            </TabItem>
+
+            <!-- HR Dashboard Tab -->
+            <TabItem Header="HR Dashboard" x:Name="tabHR">
+                <TabControl>
+                    <!-- Subtab 1: Generate Report -->
+                    <TabItem Header="Generate Reports">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="HR Reports" FontSize="22" FontWeight="Bold" Foreground="#2E7D32" Margin="0,0,0,15"/>
+                            <GroupBox Header="Approved Claims Report" Margin="0,0,0,15">
+                                <StackPanel Margin="10">
+                                    <Button Content="Generate Report" Width="160" Height="35" Background="#0277BD" Foreground="White" FontWeight="Bold"
+                                            Click="GenerateApprovedClaimsReport_Click"/>
+                                    <TextBlock x:Name="txtReportOutput" Text="" Margin="0,10,0,0" TextWrapping="Wrap" FontFamily="Consolas"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+
+                    <!-- Subtab 2: Send Invoice -->
+                    <TabItem Header="Send Invoice">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="Send Claim Report / Invoice" FontSize="22" FontWeight="Bold" Foreground="#2E7D32" Margin="0,0,0,15"/>
+                            <Label Content="Enter Lecturer ID:"/>
+                            <TextBox x:Name="txtHRSendLecturerID" Height="28" Width="200"/>
+                            <Button Content="Send Report/Invoice" Width="180" Height="35" Margin="0,10,0,0"
+                                    Background="#009688" Foreground="White" FontWeight="Bold"
+                                    Click="SendInvoice_Click"/>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
